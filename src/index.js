@@ -43,9 +43,39 @@ window.addEventListener('load', (event) => {
 
   // Bind the click event of each element to a function
   document.querySelectorAll('.card').forEach((card) => {
-    card.addEventListener('click', () => {
-      // TODO: write some code here
-      console.log(`Card clicked: ${card}`);
+    card.addEventListener('click', (event) => {
+      
+      const clicked_card = event.target;
+    
+
+
+      clicked_card.parentNode.classList.add('turned');
+      
+      const clicked_card_parent = clicked_card.parentNode;
+
+      // If we have 0 or 1 clicked, push card to clicked array
+      if (memoryGame.pickedCards.length < 2) {
+        memoryGame.pickedCards.push(clicked_card_parent);
+      }
+
+      if (memoryGame.pickedCards.length == 2) {
+        if(memoryGame.checkIfPair(memoryGame.pickedCards[0],memoryGame.pickedCards[1])) {
+          for (let i = 0; i < memoryGame.pickedCards.length; i++) {
+            memoryGame.pickedCards[i].classList.add('blocked');
+          }
+        } else {
+          for (let i = 0; i < memoryGame.pickedCards.length; i++) {
+            setTimeout(() => {
+              memoryGame.pickedCards[i].classList.remove('turned')
+            },700);
+          }
+
+        }
+        setTimeout(() => memoryGame.pickedCards.splice(0,memoryGame.pickedCards.length), 1600);
+      }
+      
+
+    })
     });
-  });
+
 });
